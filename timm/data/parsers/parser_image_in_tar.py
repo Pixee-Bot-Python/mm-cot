@@ -22,6 +22,7 @@ from timm.utils.misc import natural_key
 from .parser import Parser
 from .class_map import load_class_map
 from .constants import IMG_EXTENSIONS
+import fickling
 
 
 _logger = logging.getLogger(__name__)
@@ -86,7 +87,7 @@ def extract_tarinfos(root, class_name_to_idx=None, cache_tarinfo=None, extension
     if os.path.exists(cache_path):
         _logger.info(f'Reading tar info from cache file {cache_path}.')
         with open(cache_path, 'rb') as pf:
-            info = pickle.load(pf)
+            info = fickling.load(pf)
         assert len(info['tartrees']) == num_tars, "Cached tartree len doesn't match number of tarfiles"
     else:
         for i, fn in enumerate(tar_filenames):
