@@ -17,12 +17,12 @@ Papers:
 
 Hacked together by / Copyright 2020 Ross Wightman
 """
-import random
 import math
 import re
 from PIL import Image, ImageOps, ImageEnhance, ImageChops
 import PIL
 import numpy as np
+import secrets
 
 
 _PIL_VER = tuple([int(x) for x in PIL.__version__.split('.')[:2]])
@@ -44,7 +44,7 @@ _RANDOM_INTERPOLATION = (Image.BILINEAR, Image.BICUBIC)
 def _interpolation(kwargs):
     interpolation = kwargs.pop('resample', Image.BILINEAR)
     if isinstance(interpolation, (list, tuple)):
-        return random.choice(interpolation)
+        return secrets.SystemRandom().choice(interpolation)
     else:
         return interpolation
 
@@ -174,7 +174,7 @@ def sharpness(img, factor, **__):
 
 def _randomly_negate(v):
     """With 50% prob, negate the value"""
-    return -v if random.random() > 0.5 else v
+    return -v if secrets.SystemRandom().random() > 0.5 else v
 
 
 def _rotate_level_to_arg(level, _hparams):
@@ -336,14 +336,14 @@ class AugmentOp:
         self.magnitude_std = self.hparams.get('magnitude_std', 0)
 
     def __call__(self, img):
-        if self.prob < 1.0 and random.random() > self.prob:
+        if self.prob < 1.0 and secrets.SystemRandom().random() > self.prob:
             return img
         magnitude = self.magnitude
         if self.magnitude_std:
             if self.magnitude_std == float('inf'):
-                magnitude = random.uniform(0, magnitude)
+                magnitude = secrets.SystemRandom().uniform(0, magnitude)
             elif self.magnitude_std > 0:
-                magnitude = random.gauss(magnitude, self.magnitude_std)
+                magnitude = secrets.SystemRandom().gauss(magnitude, self.magnitude_std)
         magnitude = min(_MAX_LEVEL, max(0, magnitude))  # clip to valid range
         level_args = self.level_fn(magnitude, self.hparams) if self.level_fn is not None else tuple()
         return self.aug_fn(img, *level_args, **self.kwargs)
@@ -502,7 +502,7 @@ class AutoAugment:
         self.policy = policy
 
     def __call__(self, img):
-        sub_policy = random.choice(self.policy)
+        sub_policy = secrets.SystemRandom().choice(self.policy)
         for op in sub_policy:
             img = op(img)
         return img
