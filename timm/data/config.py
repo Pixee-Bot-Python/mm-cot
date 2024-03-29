@@ -73,6 +73,6 @@ def resolve_data_config(args, default_cfg={}, model=None, use_test_size=False, v
     if verbose:
         _logger.info('Data processing configuration for current model + dataset:')
         for n, v in new_config.items():
-            _logger.info('\t%s: %s' % (n, str(v)))
+            _logger.info('\t%s: %s', n, str(v))
 
     return new_config
