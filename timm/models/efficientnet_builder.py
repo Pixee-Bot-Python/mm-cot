@@ -349,7 +349,7 @@ class EfficientNetBuilder:
         """
         _log_info_if('Building model trunk with %d stages...' % len(model_block_args), self.verbose)
         self.in_chs = in_chs
-        total_block_count = sum([len(x) for x in model_block_args])
+        total_block_count = sum(len(x) for x in model_block_args)
         total_block_idx = 0
         current_stride = 2
         current_dilation = 1

@@ -1005,7 +1005,7 @@ def create_byob_stages(
     layers = layers or LayerFn()
     feature_info = []
     block_cfgs = [expand_blocks_cfg(s) for s in cfg.blocks]
-    depths = [sum([bc.d for bc in stage_bcs]) for stage_bcs in block_cfgs]
+    depths = [sum(bc.d for bc in stage_bcs) for stage_bcs in block_cfgs]
     dpr = [x.tolist() for x in torch.linspace(0, drop_path_rate, sum(depths)).split(depths)]
     dilation = 1
     net_stride = stem_feat['reduction']

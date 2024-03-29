@@ -72,7 +72,7 @@ def extract_tarinfos(root, class_name_to_idx=None, cache_tarinfo=None, extension
         root_name = root.strip(os.path.sep).split(os.path.sep)[-1]
         tar_filenames = glob(os.path.join(root, '*.tar'), recursive=True)
     num_tars = len(tar_filenames)
-    tar_bytes = sum([os.path.getsize(f) for f in tar_filenames])
+    tar_bytes = sum(os.path.getsize(f) for f in tar_filenames)
     assert num_tars, f'No .tar files found at specified path ({root}).'
 
     _logger.info(f'Scanning {tar_bytes/1024**2:.2f}MB of tar files...')
