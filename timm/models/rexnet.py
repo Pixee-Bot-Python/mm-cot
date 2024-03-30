@@ -100,7 +100,7 @@ def _block_cfg(width_mult=1.0, depth_mult=1.0, initial_chs=16, final_chs=180, se
     layers = [1, 2, 2, 3, 3, 5]
     strides = [1, 2, 2, 2, 1, 2]
     layers = [ceil(element * depth_mult) for element in layers]
-    strides = sum([[element] + [1] * (layers[idx] - 1) for idx, element in enumerate(strides)], [])
+    strides = sum([element] + [1] * (layers[idx] - 1) for idx, element in enumerate(strides))
     exp_ratios = [1] * layers[0] + [6] * sum(layers[1:])
     depth = sum(layers[:]) * 3
     base_chs = initial_chs / width_mult if width_mult < 1.0 else initial_chs
