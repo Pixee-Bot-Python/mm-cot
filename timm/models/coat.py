@@ -230,8 +230,9 @@ class SerialBlock(nn.Module):
 
 class ParallelBlock(nn.Module):
     """ Parallel block class. """
-    def __init__(self, dims, num_heads, mlp_ratios=[], qkv_bias=False, drop=0., attn_drop=0.,
+    def __init__(self, dims, num_heads, mlp_ratios=None, qkv_bias=False, drop=0., attn_drop=0.,
                  drop_path=0., act_layer=nn.GELU, norm_layer=nn.LayerNorm, shared_crpes=None):
+        mlp_ratios = [] if mlp_ratios is None else mlp_ratios
         super().__init__()
 
         # Conv-Attention.

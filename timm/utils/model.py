@@ -77,7 +77,7 @@ class ActivationStatsHook:
 def extract_spp_stats(model, 
                       hook_fn_locs,
                       hook_fns, 
-                      input_shape=[8, 3, 224, 224]):
+                      input_shape=None):
     """Extract average square channel mean and variance of activations during 
     forward pass to plot Signal Propogation Plots (SPP).
     
@@ -85,6 +85,7 @@ def extract_spp_stats(model,
 
     Example Usage: https://gist.github.com/amaarora/6e56942fcb46e67ba203f3009b30d950
     """ 
+    input_shape = [8, 3, 224, 224] if input_shape is None else input_shape
     x = torch.normal(0., 1., input_shape)
     hook = ActivationStatsHook(model, hook_fn_locs=hook_fn_locs, hook_fns=hook_fns)
     _ = model(x)
