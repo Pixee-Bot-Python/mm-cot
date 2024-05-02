@@ -340,7 +340,7 @@ def checkpoint_filter_fn(state_dict, model):
             k = k.replace('attn.', 'linear_tokens.')
             k = k.replace('mlp.', 'mlp_channels.')
             k = k.replace('gamma_', 'ls')
-            if k.endswith('.alpha') or k.endswith('.beta'):
+            if k.endswith(('.alpha', '.beta')):
                 v = v.reshape(1, 1, -1)
             out_dict[k] = v
         return out_dict
