@@ -545,7 +545,7 @@ class NormFreeNet(nn.Module):
             # The paper NFRegNet models have an EfficientNet-like final head convolution.
             self.num_features = make_divisible(cfg.width_factor * cfg.num_features, cfg.ch_div)
             self.final_conv = conv_layer(prev_chs, self.num_features, 1)
-            self.feature_info[-1] = dict(num_chs=self.num_features, reduction=net_stride, module=f'final_conv')
+            self.feature_info[-1] = dict(num_chs=self.num_features, reduction=net_stride, module='final_conv')
         else:
             self.num_features = prev_chs
             self.final_conv = nn.Identity()

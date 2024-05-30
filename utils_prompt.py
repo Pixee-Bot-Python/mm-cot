@@ -129,11 +129,11 @@ def create_one_example(format, question, context, choice, answer, lecture, solut
         if output.endswith("BECAUSE:"):
             output = output.replace("BECAUSE:", "").strip()
         if output_format == 'E':
-            text = input + f'Solution:'
+            text = input + 'Solution:'
         elif output_format == 'A':
-            text = input + f'Answer:'
+            text = input + 'Answer:'
         else: 
-            text = input + f'Solution:'
+            text = input + 'Solution:'
         text = text.replace("  ", " ").strip()
         output = output.replace("  ", " ").strip()
         return text, output

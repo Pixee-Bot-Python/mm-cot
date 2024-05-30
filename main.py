@@ -64,7 +64,7 @@ def T5Trainer(
     tokenizer = AutoTokenizer.from_pretrained(args.model)
 
     console.log(f"""[Model]: Loading {args.model}...\n""")
-    console.log(f"[Data]: Reading data...\n")
+    console.log("[Data]: Reading data...\n")
     problems = dataframe['problems']
     qids = dataframe['qids']
     train_qids = qids['train']
