@@ -5,7 +5,6 @@ import os
 import re
 import json
 import argparse
-import random
 from transformers import AutoTokenizer, DataCollatorForSeq2Seq, Seq2SeqTrainingArguments, Seq2SeqTrainer, T5ForConditionalGeneration
 from model import T5ForMultimodalGeneration
 from utils_data import img_shape, load_data_std, load_data_img, ScienceQADatasetStd, ScienceQADatasetImg
@@ -14,6 +13,8 @@ from utils_evaluate import get_scores
 from rich.table import Column, Table
 from rich import box
 from rich.console import Console
+import secrets
+
 console = Console(record=True)
 import nltk
 import evaluate
@@ -302,10 +303,10 @@ def T5Trainer(
                 if extract_pred in args.options:
                     extract_pred = args.options.index(extract_pred)
                 else:
-                    extract_pred = random.choice(range(0,len(args.options)))
+                    extract_pred = secrets.choice(range(0,len(args.options)))
             else:
                 num_fail += 1
-                extract_pred = random.choice(range(len(args.options))) # random choose one option
+                extract_pred = secrets.choice(range(len(args.options))) # random choose one option
             results_ans[str(qid)] = extract_pred
             results_rationale[str(qid)] = pred
             results_reference[str(qid)] = ref
@@ -365,7 +366,7 @@ if __name__ == '__main__':
     print('====Input Arguments====')
     print(json.dumps(vars(args), indent=2, sort_keys=False))
 
-    random.seed(args.seed)
+    secrets.SystemRandom().seed(args.seed)
     
     if not os.path.exists(args.output_dir):
             os.mkdir(args.output_dir)
