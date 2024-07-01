@@ -5,9 +5,9 @@ Copyright Zhun Zhong & Liang Zheng
 
 Hacked together by / Copyright 2020 Ross Wightman
 """
-import random
 import math
 import torch
+import secrets
 
 
 def _get_pixels(per_pixel, rand_color, patch_size, dtype=torch.float32, device='cuda'):
@@ -66,20 +66,20 @@ class RandomErasing:
         self.device = device
 
     def _erase(self, img, chan, img_h, img_w, dtype):
-        if random.random() > self.probability:
+        if secrets.SystemRandom().random() > self.probability:
             return
         area = img_h * img_w
         count = self.min_count if self.min_count == self.max_count else \
-            random.randint(self.min_count, self.max_count)
+            secrets.SystemRandom().randint(self.min_count, self.max_count)
         for _ in range(count):
             for attempt in range(10):
-                target_area = random.uniform(self.min_area, self.max_area) * area / count
-                aspect_ratio = math.exp(random.uniform(*self.log_aspect_ratio))
+                target_area = secrets.SystemRandom().uniform(self.min_area, self.max_area) * area / count
+                aspect_ratio = math.exp(secrets.SystemRandom().uniform(*self.log_aspect_ratio))
                 h = int(round(math.sqrt(target_area * aspect_ratio)))
                 w = int(round(math.sqrt(target_area / aspect_ratio)))
                 if w < img_w and h < img_h:
-                    top = random.randint(0, img_h - h)
-                    left = random.randint(0, img_w - w)
+                    top = secrets.SystemRandom().randint(0, img_h - h)
+                    left = secrets.SystemRandom().randint(0, img_w - w)
                     img[:, top:top + h, left:left + w] = _get_pixels(
                         self.per_pixel, self.rand_color, (chan, h, w),
                         dtype=dtype, device=self.device)
