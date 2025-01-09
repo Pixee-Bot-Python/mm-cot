@@ -3,8 +3,8 @@ import torchvision.transforms.functional as F
 from PIL import Image
 import warnings
 import math
-import random
 import numpy as np
+import secrets
 
 
 class ToNumpy:
@@ -102,16 +102,16 @@ class RandomResizedCropAndInterpolation:
         area = img.size[0] * img.size[1]
 
         for attempt in range(10):
-            target_area = random.uniform(*scale) * area
+            target_area = secrets.SystemRandom().uniform(*scale) * area
             log_ratio = (math.log(ratio[0]), math.log(ratio[1]))
-            aspect_ratio = math.exp(random.uniform(*log_ratio))
+            aspect_ratio = math.exp(secrets.SystemRandom().uniform(*log_ratio))
 
             w = int(round(math.sqrt(target_area * aspect_ratio)))
             h = int(round(math.sqrt(target_area / aspect_ratio)))
 
             if w <= img.size[0] and h <= img.size[1]:
-                i = random.randint(0, img.size[1] - h)
-                j = random.randint(0, img.size[0] - w)
+                i = secrets.SystemRandom().randint(0, img.size[1] - h)
+                j = secrets.SystemRandom().randint(0, img.size[0] - w)
                 return i, j, h, w
 
         # Fallback to central crop
@@ -139,7 +139,7 @@ class RandomResizedCropAndInterpolation:
         """
         i, j, h, w = self.get_params(img, self.scale, self.ratio)
         if isinstance(self.interpolation, (tuple, list)):
-            interpolation = random.choice(self.interpolation)
+            interpolation = secrets.choice(self.interpolation)
         else:
             interpolation = self.interpolation
         return F.resized_crop(img, i, j, h, w, self.size, interpolation)
